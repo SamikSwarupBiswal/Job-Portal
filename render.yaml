@@ -6,7 +6,7 @@ databases:
 
 services:
   - type: web
-    name: taskforge-jobportal
+    name: job-portal-samik
     env: python
     buildCommand: "./build.sh"
     startCommand: "gunicorn job_portal.wsgi:application"

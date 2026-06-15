@@ -1,6 +1,6 @@
-# TaskForge - Premium Job Portal
+# Job Portal
 
-A modern, high-performance web job application portal built with Django, SQLite, and Bootstrap 5. TaskForge features a scroll-driven SaaS landing page, dynamic search/filtering for listings, candidate application tracking, resume/cover letter uploads, and real-time external job imports via third-party API.
+A modern, high-performance web job application portal built with Django, SQLite, and Bootstrap 5. Job Portal features a scroll-driven SaaS landing page, dynamic search/filtering for listings, candidate application tracking, resume/cover letter uploads, and real-time external job imports via third-party API.
 
 ## Features
 
@@ -30,7 +30,7 @@ A modern, high-performance web job application portal built with Django, SQLite,
 1.  **Clone the Repository**:
     ```bash
     git clone <repository_url>
-    cd TaskForge-Python
+    cd "Web Job application portal"
     ```
 
 2.  **Set Up Virtual Environment**:
