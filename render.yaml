@@ -7,7 +7,7 @@ databases:
 services:
   - type: web
     name: job-portal-samik
-    env: python
+    runtime: python
     buildCommand: "./build.sh"
     startCommand: "gunicorn job_portal.wsgi:application"
     plan: free
