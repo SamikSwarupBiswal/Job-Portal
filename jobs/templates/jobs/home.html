@@ -1,0 +1,576 @@
+{% extends 'jobs/base.html' %}
+
+{% block title %}TaskForge - Premium SaaS Job Portal{% endblock %}
+
+{% block content %}
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+
+    body {
+        background-color: #f3f8fc;
+        color: #0f172a;
+        overflow-x: hidden;
+        font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    
+    .hero-section {
+        position: relative;
+        padding: 160px 0 100px 0;
+        background: radial-gradient(circle at 80% 20%, rgba(99, 102, 241, 0.06) 0%, transparent 60%),
+                    radial-gradient(circle at 20% 80%, rgba(168, 85, 247, 0.06) 0%, transparent 60%);
+    }
+    
+    .gradient-text {
+        background: linear-gradient(135deg, #4f46e5 0%, #9333ea 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+    
+    .btn-glow {
+        background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+        color: #ffffff;
+        border: none;
+        box-shadow: 0 4px 25px rgba(99, 102, 241, 0.25);
+        transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    
+    .btn-glow:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 30px rgba(168, 85, 247, 0.4);
+        color: #ffffff;
+    }
+    
+    .btn-outline-custom {
+        background: rgba(15, 23, 42, 0.03);
+        color: #0f172a;
+        border: 1px solid rgba(15, 23, 42, 0.12);
+        transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    
+    .btn-outline-custom:hover {
+        background: rgba(15, 23, 42, 0.08);
+        border-color: rgba(15, 23, 42, 0.25);
+        color: #0f172a;
+        transform: translateY(-2px);
+    }
+    
+    .glass-card {
+        background: rgba(255, 255, 255, 0.75);
+        backdrop-filter: blur(16px);
+        border: 1px solid rgba(255, 255, 255, 0.8);
+        border-radius: 24px;
+        box-shadow: 0 8px 32px rgba(31, 38, 135, 0.03);
+        transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    
+    .glass-card:hover {
+        transform: translateY(-6px);
+        background: rgba(255, 255, 255, 0.85);
+        border-color: rgba(99, 102, 241, 0.2);
+        box-shadow: 0 20px 40px rgba(99, 102, 241, 0.06);
+    }
+    
+    .bg-white-5 {
+        background-color: rgba(15, 23, 42, 0.03) !important;
+    }
+    
+    .border-white-5 {
+        border: 1px solid rgba(15, 23, 42, 0.06) !important;
+    }
+    
+    .floating-ui {
+        animation: float 6s ease-in-out infinite;
+        border-radius: 24px;
+        background: #ffffff !important;
+        box-shadow: 0 20px 40px rgba(15, 23, 42, 0.06), 0 0 40px rgba(99, 102, 241, 0.03);
+        border: 1px solid rgba(15, 23, 42, 0.06);
+    }
+    
+    @keyframes float {
+        0% { transform: translateY(0px); }
+        50% { transform: translateY(-12px); }
+        100% { transform: translateY(0px); }
+    }
+    
+    .scroll-reveal {
+        opacity: 0;
+        transform: translateY(40px);
+        transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    
+    .scroll-reveal.visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    
+    .chapter-section {
+        position: relative;
+        padding: 100px 0;
+    }
+    
+    .timeline-path {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 50%;
+        width: 2px;
+        background: linear-gradient(180deg, rgba(99, 102, 241, 0) 0%, rgba(99, 102, 241, 0.15) 20%, rgba(168, 85, 247, 0.15) 80%, rgba(168, 85, 247, 0) 100%);
+        transform: translateX(-50%);
+        z-index: 1;
+    }
+    
+    .timeline-dot {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        background: #f3f8fc;
+        border: 2px solid rgba(99, 102, 241, 0.4);
+        transform: translate(-50%, -50%);
+        z-index: 2;
+        transition: all 0.4s ease;
+    }
+    
+    .chapter-section.active .timeline-dot {
+        background: #6366f1;
+        box-shadow: 0 0 15px #6366f1;
+        border-color: #ffffff;
+    }
+    
+    .bento-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 24px;
+        margin-top: 48px;
+    }
+    
+    .bento-card {
+        padding: 40px;
+        min-height: 280px;
+    }
+    
+    .bento-card.large {
+        grid-column: span 2;
+    }
+    
+    .icon-wrapper {
+        width: 56px;
+        height: 56px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 16px;
+        background: rgba(99, 102, 241, 0.1);
+        border: 1px solid rgba(99, 102, 241, 0.2);
+        color: #818cf8;
+        margin-bottom: 24px;
+    }
+    
+    .slider-container {
+        overflow: hidden;
+        position: relative;
+        padding: 20px 0;
+    }
+    
+    .testimonial-track {
+        display: flex;
+        gap: 24px;
+        transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    
+    .testimonial-card {
+        min-width: calc(33.333% - 16px);
+        box-sizing: border-box;
+    }
+    
+    .slider-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: rgba(15, 23, 42, 0.15);
+        border: none;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    
+    .slider-dot.active {
+        background: #6366f1;
+        width: 24px;
+        border-radius: 4px;
+    }
+    
+    .text-indigo {
+        color: #6366f1 !important;
+    }
+    .bg-indigo {
+        background-color: #6366f1 !important;
+    }
+    .border-indigo {
+        border-color: #6366f1 !important;
+    }
+    
+    @media (max-width: 991.98px) {
+        .timeline-path, .timeline-dot {
+            display: none;
+        }
+        .bento-grid {
+            grid-template-columns: 1fr;
+        }
+        .bento-card.large {
+            grid-column: span 1;
+        }
+        .testimonial-card {
+            min-width: 100%;
+        }
+    }
+</style>
+
+<div id="scroll-progress"></div>
+
+<div class="hero-section d-flex align-items-center min-vh-90">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6 mb-5 mb-lg-0 text-center text-lg-start">
+                <h1 class="display-3 fw-bold mb-4 lh-sm">
+                    Architect Your Next <br><span class="gradient-text">Tech Career Transition</span>
+                </h1>
+                <p class="lead text-slate-600 mb-5 pe-lg-5">
+                    Experience a zero-friction platform designed specifically for engineers and product teams. Query listings dynamically, apply with one action, and monitor recruiter review.
+                </p>
+                <div class="d-flex flex-column flex-sm-row gap-3 justify-content-center justify-content-lg-start">
+                    <a href="{% url 'browse_jobs' %}" class="btn btn-glow btn-lg px-5 py-3 rounded-pill fw-bold">Browse Listings</a>
+                    {% if not user.is_authenticated %}
+                        <a href="{% url 'register' %}" class="btn btn-outline-custom btn-lg px-5 py-3 rounded-pill fw-bold">Register Profile</a>
+                    {% elif user.role == 'employer' %}
+                        <a href="{% url 'manage_listings' %}" class="btn btn-outline-custom btn-lg px-5 py-3 rounded-pill fw-bold">Manage Listings</a>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="position-relative p-4 scroll-reveal">
+                    <div class="position-absolute top-50 start-50 translate-middle w-75 h-75 bg-indigo bg-opacity-10 rounded-full blur-3xl"></div>
+                    <div class="bg-white p-4 border border-secondary border-opacity-10 rounded-4 floating-ui position-relative">
+                        <div class="d-flex align-items-center justify-content-between mb-4 border-bottom border-secondary border-opacity-10 pb-3">
+                            <div class="d-flex gap-2">
+                                <div class="bg-danger rounded-circle" style="width: 12px; height: 12px;"></div>
+                                <div class="bg-warning rounded-circle" style="width: 12px; height: 12px;"></div>
+                                <div class="bg-success rounded-circle" style="width: 12px; height: 12px;"></div>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-center gap-3 mb-3 p-3 bg-white-5 rounded-3 border-white-5">
+                            <div class="bg-info bg-opacity-20 p-2 rounded-3 text-info">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 22 22 22 12 2"></polygon></svg>
+                            </div>
+                            <div>
+                                <h6 class="mb-0 fw-bold">Lead Software Architect</h6>
+                                <small class="text-slate-500">Stripe • Remote</small>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-center gap-3 mb-3 p-3 bg-white-5 rounded-3 border-white-5">
+                            <div class="bg-success bg-opacity-20 p-2 rounded-3 text-success">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M12 8v8M8 12h8"></path></svg>
+                            </div>
+                            <div>
+                                <h6 class="mb-0 fw-bold">Senior Product Designer</h6>
+                                <small class="text-slate-500">Figma • New York</small>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-center gap-3 p-3 bg-white-5 rounded-3 border-white-5">
+                            <div class="bg-warning bg-opacity-20 p-2 rounded-3 text-warning">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+                            </div>
+                            <div>
+                                <h6 class="mb-0 fw-bold">Growth Marketing Manager</h6>
+                                <small class="text-slate-500">Vercel • San Francisco</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="position-relative">
+    <div class="timeline-path"></div>
+    
+    <div class="chapter-section container scroll-reveal" id="chapter-1">
+        <div class="timeline-dot"></div>
+        <div class="row align-items-center">
+            <div class="col-lg-6 mb-4 mb-lg-0">
+                <div class="icon-wrapper">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                </div>
+                <h2 class="display-5 fw-bold mb-4">01. Dynamic Discovery</h2>
+                <p class="lead text-slate-600 mb-0">
+                    Filter thousands of live technical opportunities. Instantly isolate listings based on categories, precise location coordinates, and compensation ranges. No endless loops, only relevant results.
+                </p>
+            </div>
+            <div class="col-lg-5 offset-lg-1">
+                <div class="card glass-card p-4">
+                    <div class="d-flex flex-column gap-3">
+                        <div class="p-3 bg-white-5 rounded-3 border-white-5 d-flex justify-content-between align-items-center">
+                            <span class="fw-semibold">Full-Time Only</span>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" checked disabled>
+                            </div>
+                        </div>
+                        <div class="p-3 bg-white-5 rounded-3 border-white-5 d-flex justify-content-between align-items-center">
+                            <span class="fw-semibold">Remote Settings</span>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" checked disabled>
+                            </div>
+                        </div>
+                        <div class="p-3 bg-white-5 rounded-3 border-white-5">
+                            <span class="fw-semibold d-block mb-2">Category Filter</span>
+                            <span class="badge bg-primary bg-opacity-10 text-primary border border-primary border-opacity-10 px-3 py-2">Engineering</span>
+                            <span class="badge bg-secondary bg-opacity-10 text-secondary border border-secondary border-opacity-10 px-3 py-2 ms-2">Product</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="chapter-section container scroll-reveal" id="chapter-2">
+        <div class="timeline-dot"></div>
+        <div class="row align-items-center flex-lg-row-reverse">
+            <div class="col-lg-6 mb-4 mb-lg-0">
+                <div class="icon-wrapper">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                </div>
+                <h2 class="display-5 fw-bold mb-4">02. Single-Tap Applications</h2>
+                <p class="lead text-slate-600 mb-0">
+                    Submit your credentials straight to decision makers. Attach dynamic cover letters and verified resume files with direct uploads. Skip external platforms and avoid repeating profile answers.
+                </p>
+            </div>
+            <div class="col-lg-5 offset-lg-1">
+                {% if not user.is_authenticated %}
+                    <a href="{% url 'login' %}" class="text-decoration-none d-block">
+                {% elif user.role == 'seeker' %}
+                    <a href="{% url 'browse_jobs' %}" class="text-decoration-none d-block">
+                {% else %}
+                    <a href="{% url 'manage_listings' %}" class="text-decoration-none d-block">
+                {% endif %}
+                    <div class="card glass-card p-4">
+                        <div class="text-center py-4 border-2 border-dashed border-secondary border-opacity-20 rounded-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-indigo mb-3"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="12" y1="18" x2="12" y2="12"></line><polyline points="9 15 12 12 15 15"></polyline></svg>
+                            <h6 class="fw-bold mb-1">Upload Resume File</h6>
+                            <span class="text-slate-500 small">PDF or DOCX format supported</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="chapter-section container scroll-reveal" id="chapter-3">
+        <div class="timeline-dot"></div>
+        <div class="row align-items-center">
+            <div class="col-lg-6 mb-4 mb-lg-0">
+                <div class="icon-wrapper">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+                </div>
+                <h2 class="display-5 fw-bold mb-4">03. Pipeline Management</h2>
+                <p class="lead text-slate-600 mb-0">
+                    Employers manage incoming talent through interactive pipelines. Review candidate details, download resume assets, and update applicant statuses directly inside the unified employer control dashboard.
+                </p>
+            </div>
+            <div class="col-lg-5 offset-lg-1">
+                <div class="card glass-card p-4">
+                    <div class="d-flex flex-column gap-3">
+                        <div class="d-flex justify-content-between align-items-center border-bottom border-secondary border-opacity-10 pb-3">
+                            <span class="fw-bold">Sarah Jenkins</span>
+                            <span class="badge bg-success bg-opacity-20 text-success border border-success border-opacity-25 px-2 py-1">Shortlisted</span>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center border-bottom border-secondary border-opacity-10 pb-3">
+                            <span class="fw-bold">Alex Rivera</span>
+                            <span class="badge bg-warning bg-opacity-20 text-warning border border-warning border-opacity-25 px-2 py-1">Reviewed</span>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="fw-bold">Liam Carter</span>
+                            <span class="badge bg-secondary bg-opacity-10 text-secondary border border-secondary border-opacity-10 px-2 py-1">Applied</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="py-5 bg-white bg-opacity-40 border-top border-bottom border-secondary border-opacity-10">
+    <div class="container text-center py-5">
+        <h2 class="display-5 fw-bold mb-3">Modular Architecture</h2>
+        <p class="lead text-slate-500 col-md-6 mx-auto mb-5">
+            Engineered with a modern web design system built directly on solid foundation tokens.
+        </p>
+        <div class="bento-grid">
+            <div class="card glass-card bento-card text-start">
+                <div class="icon-wrapper">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                </div>
+                <h4 class="fw-bold mb-2">API Sync</h4>
+                <p class="text-slate-600 mb-0">Live English job sync utilizing automated third-party endpoints.</p>
+            </div>
+            <div class="card glass-card bento-card large text-start">
+                <div class="icon-wrapper">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+                </div>
+                <h4 class="fw-bold mb-2">Curated Stack Integration</h4>
+                <p class="text-slate-600 mb-0">Clean separation of logic powered by Python Django, backed by SQLite, and presented in responsive Bootstrap layouts.</p>
+            </div>
+            <div class="card glass-card bento-card large text-start">
+                <div class="icon-wrapper">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="9" y1="3" x2="9" y2="21"></line></svg>
+                </div>
+                <h4 class="fw-bold mb-2">Bento Grid Layout</h4>
+                <p class="text-slate-600 mb-0">Responsive masonry interface structured to keep layout spacing balanced across mobile and desktop viewport dimensions.</p>
+            </div>
+            <div class="card glass-card bento-card text-start">
+                <div class="icon-wrapper">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.247a10 10 0 0 0-3.572 7.993c0 5.61 3.572 9.76 3.572 9.76s3.572-4.15 3.572-9.76A10 10 0 0 0 12 2.247z"></path></svg>
+                </div>
+                <h4 class="fw-bold mb-2">Premium Styling</h4>
+                <p class="text-slate-600 mb-0">Vibrant linear backgrounds, glassmorphism containers, and typography tokens.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="py-5">
+    <div class="container py-5 text-center">
+        <h2 class="display-5 fw-bold mb-5">Developer Testimonials</h2>
+        
+        <div class="slider-container">
+            <div class="testimonial-track" id="testimonial-track">
+                <div class="card glass-card p-5 testimonial-card text-start">
+                    <p class="lead text-slate-700 mb-4">
+                        "TaskForge cut down my application loop completely. Applying to developer roles took only a single click without redirects."
+                    </p>
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="bg-indigo rounded-circle d-flex align-items-center justify-content-center text-white fw-bold" style="width: 48px; height: 48px;">
+                            EM
+                        </div>
+                        <div>
+                            <h6 class="mb-0 fw-bold">Ethan Mitchell</h6>
+                            <small class="text-slate-500">Frontend Engineer</small>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card glass-card p-5 testimonial-card text-start">
+                    <p class="lead text-slate-700 mb-4">
+                        "Posting vacancies and downloading developer portfolios is seamless. The applicant pipeline updates instantly."
+                    </p>
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="bg-purple rounded-circle d-flex align-items-center justify-content-center text-white fw-bold" style="width: 48px; height: 48px; background-color: #a855f7;">
+                            HC
+                        </div>
+                        <div>
+                            <h6 class="mb-0 fw-bold">Helen Carter</h6>
+                            <small class="text-slate-500">Director of Engineering, Stripe</small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card glass-card p-5 testimonial-card text-start">
+                    <p class="lead text-slate-700 mb-4">
+                        "The interface is gorgeous and lightning fast. Dynamic search filters let me isolate relevant backend roles instantly."
+                    </p>
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="bg-orange rounded-circle d-flex align-items-center justify-content-center text-white fw-bold" style="width: 48px; height: 48px; background-color: #f97316;">
+                            DB
+                        </div>
+                        <div>
+                            <h6 class="mb-0 fw-bold">David Brooks</h6>
+                            <small class="text-slate-500">Lead DevOps Architect</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="d-flex justify-content-center gap-2 mt-5">
+                <button class="slider-dot active" onclick="setSlide(0)"></button>
+                <button class="slider-dot" onclick="setSlide(1)"></button>
+                <button class="slider-dot" onclick="setSlide(2)"></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if not user.is_authenticated %}
+<div class="py-5 text-center">
+    <div class="container pb-5">
+        <div class="p-5 rounded-4 bg-gradient bg-white bg-opacity-70 border border-secondary border-opacity-10 scroll-reveal">
+            <h2 class="display-4 fw-bold mb-4">Accelerate Your Search</h2>
+            <p class="lead text-slate-500 col-lg-8 mx-auto mb-5">
+                Setup your custom candidate or recruiter credentials today and join thousands of engineering professionals.
+            </p>
+            <div class="d-flex justify-content-center gap-3">
+                <a href="{% url 'register' %}" class="btn btn-glow btn-lg px-5 py-3 rounded-pill fw-bold">Create Your Profile</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<script>
+    window.addEventListener('scroll', () => {
+        const scrollProgress = document.getElementById('scroll-progress');
+        const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const progress = (window.pageYOffset / totalHeight) * 100;
+        scrollProgress.style.width = progress + '%';
+        
+        const chapters = document.querySelectorAll('.chapter-section');
+        chapters.forEach(chapter => {
+            const rect = chapter.getBoundingClientRect();
+            if (rect.top < window.innerHeight / 2 && rect.bottom > window.innerHeight / 2) {
+                chapter.classList.add('active');
+            } else {
+                chapter.classList.remove('active');
+            }
+        });
+    });
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const revealElements = document.querySelectorAll('.scroll-reveal');
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        });
+        revealElements.forEach(el => observer.observe(el));
+    });
+
+    let currentSlide = 0;
+    function setSlide(index) {
+        const track = document.getElementById('testimonial-track');
+        const dots = document.querySelectorAll('.slider-dot');
+        const card = document.querySelector('.testimonial-card');
+        const cardWidth = card.getBoundingClientRect().width;
+        
+        currentSlide = index;
+        track.style.transform = `translateX(-${(cardWidth + 24) * currentSlide}px)`;
+        
+        dots.forEach((dot, idx) => {
+            if (idx === currentSlide) {
+                dot.classList.add('active');
+            } else {
+                dot.classList.remove('active');
+            }
+        });
+    }
+    
+    window.addEventListener('resize', () => {
+        setSlide(currentSlide);
+    });
+</script>
+{% endblock %}

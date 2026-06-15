@@ -1,0 +1,27 @@
+{% extends 'jobs/base.html' %}
+
+{% block title %}Post a Job - Job Portal{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow-sm">
+            <div class="card-header">
+                <h4 class="mb-0 py-2 fw-bold">Post a New Job Listing</h4>
+            </div>
+            <div class="card-body p-4">
+                <form method="post">
+                    {% csrf_token %}
+                    
+                    {{ form.as_p }}
+                    
+                    <div class="mt-4 d-flex justify-content-between">
+                        <a href="{% url 'home' %}" class="btn btn-outline-secondary">Cancel</a>
+                        <button type="submit" class="btn btn-primary px-4">Publish Job</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

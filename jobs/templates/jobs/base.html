@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang ="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=100%, initial-scale=1.0">
+    <title>{%block title%}Job Portal{% endblock%}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            background-color: #f3f8fc;
+            color: #0f172a;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+        .navbar {
+            background-color: rgba(255, 255, 255, 0.85) !important;
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.06) !important;
+        }
+        .navbar-brand {
+            color: #0f172a !important;
+        }
+        .navbar-nav .nav-link {
+            color: #334155 !important;
+        }
+        .navbar-nav .nav-link:hover {
+            color: #6366f1 !important;
+        }
+        .card {
+            background: #ffffff !important;
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            border-radius: 20px !important;
+            color: #0f172a !important;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02) !important;
+        }
+        .card-header {
+            background-color: rgba(0, 0, 0, 0.02) !important;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.06) !important;
+            color: #0f172a !important;
+        }
+        .form-control, .form-select, input[type="text"], input[type="password"], input[type="email"], select, textarea {
+            background-color: #ffffff !important;
+            border: 1px solid #cbd5e1 !important;
+            color: #0f172a !important;
+        }
+        .form-control:focus, .form-select:focus, input[type="text"]:focus, input[type="password"]:focus, input[type="email"]:focus, select:focus, textarea:focus {
+            background-color: #ffffff !important;
+            border-color: #6366f1 !important;
+            box-shadow: 0 0 8px rgba(99, 102, 241, 0.2) !important;
+            color: #0f172a !important;
+            outline: none;
+        }
+        .form-control::placeholder, input::placeholder {
+            color: rgba(15, 23, 42, 0.45) !important;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%) !important;
+            border: none !important;
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.25) !important;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+            color: #ffffff !important;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(168, 85, 247, 0.45) !important;
+            color: #ffffff !important;
+        }
+        .btn-outline-primary {
+            border-color: rgba(99, 102, 241, 0.5) !important;
+            color: #6366f1 !important;
+            transition: all 0.3s ease !important;
+        }
+        .btn-outline-primary:hover {
+            background-color: rgba(99, 102, 241, 0.08) !important;
+            border-color: #6366f1 !important;
+            color: #6366f1 !important;
+            transform: translateY(-2px);
+        }
+        .text-muted {
+            color: #64748b !important;
+        }
+        .bg-light {
+            background-color: rgba(0, 0, 0, 0.02) !important;
+        }
+        .errorlist {
+            color: #dc2626;
+            list-style-type: none;
+            padding-left: 0;
+            margin-top: 5px;
+            font-size: 0.9rem;
+        }
+        .pagination {
+            border-radius: 30px !important;
+            border: 1px solid rgba(0, 0, 0, 0.08) !important;
+            background: #ffffff !important;
+            padding: 2px !important;
+        }
+        .page-link {
+            color: #334155 !important;
+            background-color: transparent !important;
+            border: none !important;
+            border-radius: 30px !important;
+            transition: all 0.2s ease !important;
+            margin: 0 2px !important;
+        }
+        .page-link:hover {
+            background-color: rgba(99, 102, 241, 0.08) !important;
+            color: #6366f1 !important;
+        }
+        .page-item.active .page-link {
+            background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%) !important;
+            color: #ffffff !important;
+            font-weight: bold !important;
+        }
+        .page-item.disabled .page-link {
+            color: #94a3b8 !important;
+            background-color: transparent !important;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light mb-4">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="{% url 'home' %}"> Job Portal</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'home' %}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'browse_jobs' %}">Browse Jobs</a>
+                    </li>
+                    {% if user.is_authenticated and user.role == 'employer' %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'post_job' %}">Post a Job</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'manage_listings' %}">Manage Listings</a>
+                        </li>
+                    {% endif %}
+                    {% if user.is_authenticated and user.is_superuser %}
+                        <li class="nav-item">
+                            <a class="nav-link text-warning fw-bold" href="{% url 'import_external_jobs' %}">Import API Jobs</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-info fw-bold" href="{% url 'admin:index' %}">Admin Dashboard</a>
+                        </li>
+                    {% endif %}
+                </ul>
+                <ul class="navbar-nav ms-auto">
+                    {% if user.is_authenticated %}
+                        <li class="nav-item">
+                            <span class="nav-link text-dark fw-semibold">{{ user.username }}</span>
+                        </li>
+                        <li class="nav-item">
+                            <form action="{% url 'logout' %}" method="post" class="d-inline">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-link nav-link">Logout</button>
+                            </form>
+                        </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'login' %}">Login</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'register' %}">Register</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container">
+        {% block content %}
+        {% endblock %}
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,114 @@
+{% extends 'jobs/base.html' %}
+
+{% block title %}Browse Jobs - Job Portal{% endblock %}
+
+{% block content %}
+<div class="card shadow-sm border-0 mb-5 p-4">
+    <form method="get" action="{% url 'browse_jobs' %}">
+        <div class="row g-3">
+            <div class="col-md-4">
+                <input type="text" name="query" class="form-control" placeholder="Search title, description, or company..." value="{{ query }}">
+            </div>
+            <div class="col-md-3">
+                <select name="location" class="form-select">
+                    <option value="">Choose Location...</option>
+                    {% for loc in locations %}
+                        <option value="{{ loc }}" {% if loc == selected_location %}selected{% endif %}>{{ loc }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-3">
+                <select name="category" class="form-select">
+                    <option value="">Choose Category...</option>
+                    {% for cat in categories %}
+                        <option value="{{ cat }}" {% if cat == selected_category %}selected{% endif %}>{{ cat }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-2 d-grid gap-2 d-flex">
+                <button type="submit" class="btn btn-primary w-100">Filter</button>
+                <a href="{% url 'browse_jobs' %}" class="btn btn-outline-secondary w-100">Clear</a>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="container mt-5">
+    <h2 class="mb-4 text-center fw-bold">Recent Openings</h2>
+    <div class="row">
+        {% for job in jobs %}
+            <div class="col-md-6 mb-4">
+                <div class="card h-100 shadow-sm border-0">
+                    <div class="card-body p-4 d-flex flex-column">
+                        <div class="d-flex gap-2 mb-2 align-self-start">
+                            <span class="badge bg-secondary">{{ job.category }}</span>
+                            {% if job.is_external %}
+                                <span class="badge bg-info bg-opacity-10 text-info border border-info border-opacity-10">API Listing</span>
+                            {% else %}
+                                <span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-10">Employer Direct</span>
+                            {% endif %}
+                        </div>
+                        <h4 class="card-title fw-bold text-primary">{{ job.title }}</h4>
+                        <h6 class="card-subtitle mb-2 text-muted">{{ job.company }} — 📍 {{ job.location }}</h6>
+                        <p class="card-text text-muted">{{ job.description|striptags|truncatechars:100 }}</p>
+                        <div class="mt-auto d-flex justify-content-between align-items-center">
+                            {% if job.salary %}
+                                <span class="fw-bold text-success">💰 {{ job.salary }}</span>
+                            {% else %}
+                                <span class="text-muted">Salary: Negotiable</span>
+                            {% endif %}
+                            <a href="{% url 'job_detail' job.id %}" class="btn btn-outline-primary btn-sm">View Details</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <div class="col-12 text-center my-5">
+                <p class="fs-4 text-muted">No jobs posted yet. Be the first to post a job!</p>
+            </div>
+        {% endfor %}
+    </div>
+    
+    {% if jobs.has_other_pages %}
+        <nav class="d-flex justify-content-center mt-5">
+            <ul class="pagination shadow-sm">
+                {% if jobs.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link py-2 px-3" href="?page={{ jobs.previous_page_number }}{% if query %}&query={{ query }}{% endif %}{% if selected_location %}&location={{ selected_location }}{% endif %}{% if selected_category %}&category={{ selected_category }}{% endif %}" aria-label="Previous">
+                            <span>&laquo; Previous</span>
+                        </a>
+                    </li>
+                {% else %}
+                    <li class="page-item disabled">
+                        <span class="page-link py-2 px-3">&laquo; Previous</span>
+                    </li>
+                {% endif %}
+                
+                {% for num in jobs.paginator.page_range %}
+                    {% if jobs.number == num %}
+                        <li class="page-item active">
+                            <span class="page-link py-2 px-3">{{ num }}</span>
+                        </li>
+                    {% elif num > jobs.number|add:'-3' and num < jobs.number|add:'3' %}
+                        <li class="page-item">
+                            <a class="page-link py-2 px-3" href="?page={{ num }}{% if query %}&query={{ query }}{% endif %}{% if selected_location %}&location={{ selected_location }}{% endif %}{% if selected_category %}&category={{ selected_category }}{% endif %}">{{ num }}</a>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+                
+                {% if jobs.has_next %}
+                    <li class="page-item">
+                        <a class="page-link py-2 px-3" href="?page={{ jobs.next_page_number }}{% if query %}&query={{ query }}{% endif %}{% if selected_location %}&location={{ selected_location }}{% endif %}{% if selected_category %}&category={{ selected_category }}{% endif %}" aria-label="Next">
+                            <span>Next &raquo;</span>
+                        </a>
+                    </li>
+                {% else %}
+                    <li class="page-item disabled">
+                        <span class="page-link py-2 px-3">Next &raquo;</span>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
+    {% endif %}
+</div>
+{% endblock %}

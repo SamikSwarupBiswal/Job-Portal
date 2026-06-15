@@ -1,0 +1,84 @@
+{% extends 'jobs/base.html' %}
+
+{% block title %}Manage Listings - Job Portal{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Your Posted Job Listings</h2>
+        <a href="{% url 'post_job' %}" class="btn btn-primary">➕ Post Another Job</a>
+    </div>
+
+    {% for job in jobs %}
+        <div class="card mb-4 shadow-sm border">
+            <div class="card-header bg-light d-flex justify-content-between align-items-center">
+                <div>
+                    <h4 class="mb-0 text-primary fw-bold">{{ job.title }}</h4>
+                    <small class="text-muted">📍 {{ job.location }} | Posted: {{ job.created_at|date:"M d, Y" }}</small>
+                </div>
+                <span class="badge bg-secondary">{{ job.category }}</span>
+            </div>
+            
+            <div class="card-body">
+                <p class="text-muted">{{ job.description }}</p>
+                <hr>
+                
+                <h5 class="fw-bold mb-3 text-secondary">Incoming Applications ({{ job.applications.count }})</h5>
+                
+                <div class="row">
+                    {% for app in job.applications.all %}
+                        <div class="col-md-6 mb-3">
+                            <div class="card border-info">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <h6 class="card-title fw-bold mb-0">{{ app.seeker.username }}</h6>
+                                        {% if app.status == 'accepted' %}
+                                            <span class="badge bg-success">Accepted</span>
+                                        {% elif app.status == 'rejected' %}
+                                            <span class="badge bg-danger">Rejected</span>
+                                        {% else %}
+                                            <span class="badge bg-warning text-dark">Pending</span>
+                                        {% endif %}
+                                    </div>
+                                    <p class="card-text mb-1"><small class="text-muted">Email: {{ app.seeker.email }}</small></p>
+                                    <p class="card-text mb-2"><strong>Cover Letter:</strong> <br> <span class="text-muted">{{ app.cover_letter }}</span></p>
+                                    
+                                    <div class="d-flex justify-content-between align-items-center mt-3 pt-2 border-top">
+                                        <div>
+                                            {% if app.resume %}
+                                                <a href="{% url 'view_resume' app.id %}" class="btn btn-sm btn-outline-info" target="_blank">📄 View Resume</a>
+                                            {% else %}
+                                                <span class="text-muted fs-7">No resume uploaded.</span>
+                                            {% endif %}
+                                        </div>
+                                        <div class="btn-group">
+                                            {% if app.status != 'accepted' %}
+                                                <a href="{% url 'update_application_status' app.id 'accepted' %}" class="btn btn-sm btn-success text-white py-1 px-2">Accept</a>
+                                            {% endif %}
+                                            {% if app.status != 'rejected' %}
+                                                <a href="{% url 'update_application_status' app.id 'rejected' %}" class="btn btn-sm btn-danger text-white py-1 px-2">Reject</a>
+                                            {% endif %}
+                                            {% if app.status != 'pending' %}
+                                                <a href="{% url 'update_application_status' app.id 'pending' %}" class="btn btn-sm btn-outline-secondary py-1 px-2">Reset</a>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% empty %}
+                        <div class="col-12">
+                            <p class="text-muted italic">No applications received yet for this listing.</p>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    {% empty %}
+        <div class="text-center my-5 py-5 card">
+            <p class="fs-4 text-muted">You haven't posted any jobs yet!</p>
+            <a href="{% url 'post_job' %}" class="btn btn-primary btn-lg mt-3">Post Your First Job</a>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}
